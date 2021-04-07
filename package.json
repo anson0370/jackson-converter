@@ -1,0 +1,18 @@
+{
+  "name": "jackson-converter",
+  "version": "1.0.0",
+  "description": "A jackson parser for js",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "npx ava",
+    "pub": "npm publish --registry=https://registry.npmjs.org/"
+  },
+  "author": "anson0370",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^3.15.0"
+  }
+}

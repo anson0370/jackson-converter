@@ -1,0 +1,17 @@
+public/
+.sass-cache
+.DS_Store
+vendor/
+icons.scss
+Linnerfile
+.idea/
+_variables.scss
+jiggly.json
+vendor_modules/
+components_vendor/
+node_modules/
+vendor/
+logs/
+dist/
+.vscode/
+*.log
