@@ -1,12 +1,12 @@
 function getInstance(prefix) {
-  function isRef(obj) {
-    return typeof obj === 'string' && obj.startsWith(prefix);
+  function isRef(obj, selfPath) {
+    return typeof obj === 'string' && obj.startsWith(prefix) && selfPath !== '@id';
   }
 
   function visitJsonObj(jsonObj, parentObj, selfPath, refTargets) {
     // 如果是 ref 对象，则从 refTargets 中找到对象并替换掉
     // 首次进入 visitJsonObj 肯定不会是 ref 对象
-    if (isRef(jsonObj)) {
+    if (isRef(jsonObj, selfPath)) {
       const refTarget = refTargets[jsonObj];
       if (refTarget == null) {
         throw new Error(`Can not find object for refId: ${jsonObj}`);

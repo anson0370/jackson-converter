@@ -56,3 +56,10 @@ test('array', t => {
   t.is(obj.children[2], obj.department);
   t.is(obj.department.children[0], obj.children[0]);
 });
+
+test('case', t => {
+  const jsonStr = `{"res":[{"@id":"@id:3b0eb666-1c4e-44c8-966a-ebcf273677f5","id":"6f7da0036bab80aa5caf8b493bbb8807","createdAt":1616575637000,"updatedAt":1617785467000,"createdBy":{"@id":"@id:2df2c8c6-6c54-4d42-bb95-3b6130fc6b6b"},"updatedBy":{"@id":"@id:6d859072-12f4-43fc-be69-6c17496f12c6"},"key":"gaia_zh-CN","originalKey":"zh-CN","desc":"简体中文","locale":"zh-CN","enabled":true},{"@id":"@id:41b6138c-058c-4bb5-9cc0-8ac79419ae08","id":"9a62883f9c85a5833200cc52a7529ae6","createdAt":1616654994000,"updatedAt":1617349028000,"createdBy":{"@id":"@id:fcee7e7c-b53b-4a5a-ba4c-0e70ffacfb97"},"updatedBy":{"@id":"@id:ad1be6e1-f04a-4104-b8f4-e4ca7b147a72"},"key":"gaia_en-US","originalKey":"en-US","desc":"English Language","locale":"en-US","enabled":true}],"code":200,"success":true}`;
+
+  const obj = jacksonConverter.parse(jsonStr);
+  t.is(obj.res[0].id, '6f7da0036bab80aa5caf8b493bbb8807');
+});
