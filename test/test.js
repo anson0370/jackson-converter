@@ -19,6 +19,7 @@ test('object', t => {
   const obj = jacksonConverter.parse(jsonStr);
 
   t.is(obj.id, 1);
+  t.is(obj['@id'], undefined);
   t.is(obj.department.id, 3);
   t.is(obj.department.department.id, 2);
   t.is(obj.department.department.department, obj);

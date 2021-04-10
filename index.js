@@ -14,9 +14,10 @@ function getInstance(prefix) {
       parentObj[selfPath] = refTarget;
       return;
     }
-    // 如果对象本身有 @id 的属性，则存到引用对象里面
+    // 如果对象本身有 @id 的属性，则存到引用对象里面，同时把 @id 属性给删了
     const refId = jsonObj['@id'];
     if (refId != null) {
+      delete jsonObj['@id'];
       refTargets[refId] = jsonObj;
     }
     
