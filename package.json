@@ -1,11 +1,16 @@
 {
   "name": "jackson-converter",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A jackson parser for js",
   "main": "index.js",
   "files": [
-    "index.js"
+    "index.js",
+    "cli.js",
+    "bin"
   ],
+  "bin": {
+    "jackson-path": "bin/jackson-path.js"
+  },
   "scripts": {
     "test": "npx ava",
     "pub": "npm publish --registry=https://registry.npmjs.org/"
@@ -14,5 +19,9 @@
   "license": "ISC",
   "devDependencies": {
     "ava": "^3.15.0"
+  },
+  "dependencies": {
+    "commander": "^7.2.0",
+    "jsonpath-plus": "^5.0.7"
   }
 }
