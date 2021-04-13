@@ -4,6 +4,9 @@ function getInstance(prefix) {
   }
 
   function visitJsonObj(jsonObj, parentObj, selfPath, refTargets) {
+    if (jsonObj == null) {
+      return;
+    }
     // 如果是 ref 对象，则从 refTargets 中找到对象并替换掉
     // 首次进入 visitJsonObj 肯定不会是 ref 对象
     if (isRef(jsonObj, selfPath)) {

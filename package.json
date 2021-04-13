@@ -1,6 +1,6 @@
 {
   "name": "jackson-converter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A jackson parser for js",
   "main": "index.js",
   "files": [
