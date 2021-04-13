@@ -74,4 +74,8 @@ test('stringify', t => {
   const jsonStr = jacksonConverter.stringify(obj1);
   console.log(jsonStr);
   t.pass();
+
+  const obj = jacksonConverter.parse(jsonStr);
+  t.is(obj.obj.key, 2);
+  t.is(obj.obj.obj.key, 1);
 });

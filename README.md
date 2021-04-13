@@ -24,4 +24,7 @@ const obj = jkc.parse(someJsonString);
 // 或者给定一个 prefix
 const jkc = require('jackson-converter').getInstance('@id:');
 const obj = jkc.parse(someJsonString);
+
+// 也可以 stringify
+const jsonStr = jkc.stringify(obj);
 ```
