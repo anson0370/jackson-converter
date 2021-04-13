@@ -12,4 +12,4 @@ program
 program.parse(process.argv);
 
 const options = program.opts();
-console.log(JSON.stringify(JSONPath({path: options.path, json: jacksonConverter.parse(options.json)})));
+console.log(jacksonConverter.stringify(JSONPath({path: options.path, json: jacksonConverter.parse(options.json)})));

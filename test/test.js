@@ -64,3 +64,14 @@ test('case', t => {
   const obj = jacksonConverter.parse(jsonStr);
   t.is(obj.res[0].id, '6f7da0036bab80aa5caf8b493bbb8807');
 });
+
+test('stringify', t => {
+  const obj1 = {key: 1};
+  const obj2 = {key: 2};
+  obj1.obj = obj2;
+  obj2.obj = obj1;
+
+  const jsonStr = jacksonConverter.stringify(obj1);
+  console.log(jsonStr);
+  t.pass();
+});

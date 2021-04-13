@@ -1,70 +1,64 @@
+const { v4: uuidv4 } = require('uuid');
+
 function getInstance(prefix) {
-  function isRef(obj, selfPath) {
-    return typeof obj === 'string' && obj.startsWith(prefix) && selfPath !== '@id';
+  function generateUUID() {
+    return prefix + uuidv4();
   }
 
-  function visitJsonObj(jsonObj, parentObj, selfPath, refTargets) {
-    if (jsonObj == null) {
-      return;
-    }
-    // 如果是 ref 对象，则从 refTargets 中找到对象并替换掉
-    // 首次进入 visitJsonObj 肯定不会是 ref 对象
-    if (isRef(jsonObj, selfPath)) {
-      const refTarget = refTargets[jsonObj];
-      if (refTarget == null) {
-        throw new Error(`Can not find object for refId: ${jsonObj}`);
-      }
-      parentObj[selfPath] = refTarget;
-      return;
-    }
-    // 如果对象本身有 @id 的属性，则存到引用对象里面，同时把 @id 属性给删了
-    const refId = jsonObj['@id'];
-    if (refId != null) {
-      delete jsonObj['@id'];
-      refTargets[refId] = jsonObj;
-    }
-    
-    if (isObj(jsonObj)) {
-      Object.keys(jsonObj).forEach(objKey => {
-        const nextObj = jsonObj[objKey];
-        visitJsonObj(nextObj, jsonObj, objKey, refTargets);
-      });
-      return;
-    }
-    if (isArray(jsonObj)) {
-      jsonObj.forEach((nextObj, arrayIndex) => {
-        visitJsonObj(nextObj, jsonObj, arrayIndex, refTargets);
-      });
-      return;
-    }
-    return;
+  function isRef(value) {
+    return typeof value === 'string' && value.startsWith(prefix);
   }
 
   return {
     parse: (jsonString) => {
-      const jsonObj = JSON.parse(jsonString);
+      const refTargets = {};
 
-      if (!isObj(jsonObj) && !isArray(jsonObj)) {
-        return jsonObj;
-      }
-
-      const refTragets = {};
-
-      visitJsonObj(jsonObj, null, null, refTragets);
-      return jsonObj;
+      return JSON.parse(jsonString, function(key, value) {
+        // 如果 key 是 @id 则把 this 放到引用池里备用
+        if (key == '@id') {
+          refTargets[value] = this;
+          // 这里避免问题，直接不返回 @id 本身
+          return undefined;
+        }
+        // 如果 value 是一个 ref 格式的字符串，则去引用池里找一下引用并替换掉
+        if (isRef(value)) {
+          const refTarget = refTargets[value];
+          if (refTarget == null) {
+            throw new Error(`Can not find object for refId: ${value}`);
+          }
+          return refTarget;
+        }
+        // 除此之外的情况都直接返回
+        return value;
+      });
+    },
+    stringify: (obj) => {
+      return JSON.stringify(obj, function(key, value) {
+        // 只处理 object
+        if (isObj(value)) {
+          // 如果 object 没有 @id ，生成一个
+          if (value['@id'] == null) {
+            value['@id'] = generateUUID();
+            return value;
+          }
+          // 如果有，返回 @id 的值
+          return value['@id'];
+        }
+        // 其余情况直接返回
+        return value;
+      });
     }
   };
 }
 
 function isObj(obj) {
-  return !isArray(obj) && typeof obj === 'object' && obj != null;
+  return !Array.isArray(obj) && typeof obj === 'object' && obj != null;
 }
 
-function isArray(obj) {
-  return Array.isArray(obj);
-}
+const defaultInstance = getInstance('@id:');
 
 module.exports = {
-  parse: getInstance('@id:').parse,
+  parse: defaultInstance.parse,
+  stringify: defaultInstance.stringify,
   getInstance
 }
