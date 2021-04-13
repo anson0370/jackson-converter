@@ -7,9 +7,16 @@ const jacksonConverter = require('./index');
 program
   .version(pkg.version)
   .option('-j, --json <jsonString>', 'Json content')
-  .option('-p, --path <jsonPath>', 'Json path');
+  .option('-p, --path <jsonPath>', 'Json path')
+  .option('-u, --unwrap', 'Unwrap array if only one result');
 
 program.parse(process.argv);
 
 const options = program.opts();
-console.log(jacksonConverter.stringify(JSONPath({path: options.path, json: jacksonConverter.parse(options.json)})));
+const wrap = !options.unwrap;
+const result = JSONPath({
+  path: options.path,
+  json: jacksonConverter.parse(options.json),
+  wrap
+});
+console.log(jacksonConverter.stringify(result));
