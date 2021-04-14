@@ -65,6 +65,29 @@ test('case', t => {
   t.is(obj.res[0].id, '6f7da0036bab80aa5caf8b493bbb8807');
 });
 
+test('@id after', t => {
+  const jsonStr = `{
+    "id":1,
+    "department":{
+        "id":3,
+        "department":{
+            "id":2,
+            "department":"@id:cf1f315b-a5b4-4313-a945-f5f2d6e90532",
+            "@id":"@id:8bc5cd50-376b-47e4-afee-6d2392e70c52"
+        },
+        "@id":"@id:1072f8d5-61e1-46eb-bb4e-b45f3504b669"
+    },
+    "@id":"@id:cf1f315b-a5b4-4313-a945-f5f2d6e90532"
+}`;
+  const obj = jacksonConverter.parse(jsonStr);
+
+  t.is(obj.id, 1);
+  t.is(obj['@id'], undefined);
+  t.is(obj.department.id, 3);
+  t.is(obj.department.department.id, 2);
+  t.is(obj.department.department.department, obj);
+});
+
 test('stringify', t => {
   const obj1 = {key: 1};
   const obj2 = {key: 2};
