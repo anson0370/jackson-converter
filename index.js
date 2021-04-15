@@ -47,11 +47,8 @@ function getInstance(prefix) {
         if (isObj(value)) {
           // 如果 object 没有 @id ，生成一个
           if (value['@id'] == null) {
-            const uuid = generateUUID();
-            // 给原对象塞一个，必须塞，因为返回时为了保证顺序，是一个新对象。
-            // 如果不给原对象塞会导致同对象再次被遍历到的时候仍然是没有 @id 的，就会爆栈
-            value['@id'] = uuid;
-            return {'@id': uuid, ...value};
+            value['@id'] = generateUUID();
+            return value;
           }
           // 如果有，返回 @id 的值
           return value['@id'];
