@@ -1,0 +1,13 @@
+{
+    "@id":"@id:cf1f315b-a5b4-4313-a945-f5f2d6e90532",
+    "id":1,
+    "department":{
+        "@id":"@id:1072f8d5-61e1-46eb-bb4e-b45f3504b669",
+        "id":3,
+        "department":{
+            "@id":"@id:8bc5cd50-376b-47e4-afee-6d2392e70c52",
+            "id":2,
+            "department":"@id:cf1f315b-a5b4-4313-a945-f5f2d6e90532"
+        }
+    }
+}
