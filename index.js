@@ -42,16 +42,19 @@ function getInstance(prefix) {
       return obj;
     },
     stringify: (obj) => {
+      const objIdMap = new Map()
       return JSON.stringify(obj, function(key, value) {
         // 只处理 object
         if (isObj(value)) {
+          const objId = objIdMap.get(value);
           // 如果 object 没有 @id ，生成一个
-          if (value['@id'] == null) {
-            value['@id'] = generateUUID();
-            return value;
+          if (objId === undefined) {
+            const id = generateUUID();
+            objIdMap.set(value, id);
+            return { ...value, '@id': id };
           }
           // 如果有，返回 @id 的值
-          return value['@id'];
+          return objId;
         }
         // 其余情况直接返回
         return value;
